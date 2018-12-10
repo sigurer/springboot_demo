@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springboot_demo.mapper.BookMapper" >
+
+    <resultMap id="BookMapping" type="com.example.springboot_demo.domain.Book" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="author" property="author" jdbcType="VARCHAR" />
+        <result column="pubtime" property="pubtime" jdbcType="VARCHAR" />
+        <result column="kind" property="kind" jdbcType="VARCHAR" />
+        <result column="introduce" property="introduce" jdbcType="VARCHAR" />
+        <result column="recommend" property="recommend" jdbcType="VARCHAR" />
+        <result column="bookimage" property="bookimage" jdbcType="VARCHAR" />
+        <result column="recommentnum" property="recommentnum" jdbcType="INTEGER" />
+
+        <collection property="recomments"
+                    resultMap="com.example.springboot_demo.mapper.RecommentMapper.RecommentMapping"/>
+    </resultMap>
+
+    <select id="findBook" resultMap="java.util.List" parameterType="java.util.Map" >
+        select *
+        from book
+        <where>
+            <if test="param.id != null and param.id != ''">
+                id = #{param.id}
+            </if>
+            <if test="param.name != null and param.name != ''" >
+                and name LIKE "%${param.name}%"
+            </if>
+        </where>
+    </select>
+
+</mapper>

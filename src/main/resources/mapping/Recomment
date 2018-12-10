@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springboot_demo.mapper.RecommentMapper" >
+
+    <resultMap id="BookMapping" type="com.example.springboot_demo.domain.Recomment" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="time" property="time" jdbcType="DATETIME" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <association property="user" resultMap="com.example.springboot_demo.mapper.UserMapper.UserMapping"/>
+
+        <association property="book" resultMap="com.example.springboot_demo.mapper.BookMapper.BookMapping"/>
+    </resultMap>
+
+    <select id="findRecomment" resultMap="java.util.List" parameterType="java.util.Map" >
+        select *
+        from recomment
+        <where>
+            <if test="param.id != null and param.id != ''">
+                id = #{param.id}
+            </if>
+            <if test="param.content != null and param.content != ''" >
+                and content LIKE "%${param.content}%"
+            </if>
+        </where>
+    </select>
+
+</mapper>
